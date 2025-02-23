@@ -43,3 +43,30 @@ async def store_image_embeddings(image_data):
     )
     
     return len(keys)
+
+
+async def find_similar(url, top_k):
+    
+    async with aiohttp.ClientSession() as session:
+        image = await download_image(session, url)
+    
+    inputs = preprocess_image(images=image)
+    embeddings = get_image_embedding(inputs=inputs)
+
+    results = qdrant_client.query_points(
+        collection_name=settings.QDRANT_SIMILARITY_COLLECTION_NAME,
+        query=embeddings[0].tolist(),
+        limit=top_k
+    )
+    
+    search_result = [
+        {
+            "id": str(result.id),
+            "url": result.payload["url"],
+            "score": result.score
+        }
+        for result in results.points
+    ]
+
+    return search_result
+    
