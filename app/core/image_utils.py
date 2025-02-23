@@ -7,7 +7,7 @@ from app.MLmodels.image_embedding_model import model, processor_model
 
 async def download_image(session, url):
     async with session.get(url) as response:
-        return Image.open(Image.open(BytesIO(await response.read())).convert("RGB"))
+        return Image.open(BytesIO(await response.read())).convert("RGB")
 
 
 def preprocess_image(images):
