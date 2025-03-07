@@ -11,13 +11,13 @@ async def lifespan(app: FastAPI):
     vector_size = settings.QDRANT_SIMILARITY_COLLECTION_VECTOR_SIZE
     if not qdrant_client.collection_exists(collection_name=collection_name):
         create_qdrant_collection(collection_name=collection_name, vector_size=vector_size)
-        print(f"Created Qdrant collection: {collection_name}")
+        print(f"FastAPI:: Created Qdrant collection: {collection_name}")
     else:
-        print(f"Qdrant collection '{collection_name}' already exists.")
+        print(f"FastAPI:: Qdrant collection '{collection_name}' already exists.")
 
     yield  # App runs here
 
-    print("FastAPI shutting down")
+    print("FastAPI:: shutting down")
 
 
 

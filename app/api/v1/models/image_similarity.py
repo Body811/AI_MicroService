@@ -1,13 +1,14 @@
 from pydantic import BaseModel, Field
-from typing import List, Dict
+from typing import List
+from uuid import UUID
 
 class StoreImageRequest(BaseModel):
-    data: dict[str, str] = Field(
+    data: dict[UUID, str] = Field(
         ...,
         examples=[{
-            "1": "https://example.com/image1.jpg",
-            "2": "https://example.com/image2.jpg",
-            "3": "https://example.com/image3.jpg"
+            "550e8400-e29b-41d4-a716-446655440000": "https://example.com/image1.jpg",
+            "3fa85f64-5717-4562-b3fc-2c963f66afa6": "https://example.com/image2.jpg",
+            "16fd2706-8baf-433b-82eb-8c7fada847da": "https://example.com/image3.jpg"
             }]
         )
     
@@ -15,34 +16,31 @@ class StoreImageResponse(BaseModel):
     images_stored: int = Field(...,examples=[3])
     message: str = Field(..., examples=["Images Stored Successfully"])
     
-class ImageSimilarityRequest(BaseModel):
-    url: str = Field(..., examples=["https://example.com/image1.jpg"])
-    top_k: int = Field(default=3, examples=[5])
     
 class ImageSimilarityResponse(BaseModel):
     products: List[dict] = Field(
         ...,
         examples=[[
             {
-                "id": "1",
+                "id": "550e8400-e29b-41d4-a716-446655440000",
                 "url": "https://example.com/image1.jpg",
                 "score": 0.95
             },
             {
-                "id": "2",
+                "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                 "url": "https://example.com/image2.jpg",
                 "score": 0.93
             },
             {
                 "id": "3",
-                "url": "https://example.com/image3.jpg",
+                "url": "16fd2706-8baf-433b-82eb-8c7fada847da",
                 "score": 0.90
             }
         ]]
     )
 
-class deleteImageRequest(BaseModel):
-    id: int
+class DeleteImageRequest(BaseModel):
+    ids: List[UUID]
     
-class deleteImageResponse(BaseModel):
+class DeleteImageResponse(BaseModel):
     message: str

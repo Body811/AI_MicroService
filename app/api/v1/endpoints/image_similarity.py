@@ -1,5 +1,5 @@
-from fastapi import APIRouter, HTTPException
-from app.services.image_similarity_service import store_image_embeddings, find_similar
+from fastapi import APIRouter, HTTPException, UploadFile, File
+from app.services.image_similarity_service import store_image_service, search_image_service, delete_image_service
 from app.api.v1.models.image_similarity import *
 
 router = APIRouter()
@@ -7,7 +7,7 @@ router = APIRouter()
 @router.post("/store", response_model=StoreImageResponse)
 async def store_images(request: StoreImageRequest):
     try:
-        stored_images = await store_image_embeddings(request.data)    
+        stored_images = await store_image_service(request.data)    
         return StoreImageResponse(
             images_stored=stored_images,
             message="Images Stored Successfully"
@@ -17,18 +17,32 @@ async def store_images(request: StoreImageRequest):
 
 
 @router.post("/search",response_model=ImageSimilarityResponse)
-async def search_image(request: ImageSimilarityRequest):
+async def search_image(file: UploadFile = File(...),top_k: int = 5):
     try:
-        results = await find_similar(request.url, request.top_k)
+        if file.content_type not in {"image/jpg, image/png, image/webp"}:
+            raise HTTPException(status_code=400, detail="Invalid file type!: Use supported formats (jpg, png, webp)")
+        
+        results = await search_image_service(file, top_k)
         return ImageSimilarityResponse(products=results)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 
 
-
+@router.delete("/delete",response_model=DeleteImageResponse)
+async def delete_image(request: DeleteImageRequest):
+    try:
+        
+        delete_image_service(request.ids)
+        return DeleteImageResponse(
+            message=f"Deleted {len(request.ids)} items successfully"
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+    
 #TODO Endpoint save Embedding: (list of urls) -> returns message (DONE)
 #TODO Endpoint get closest item: (1 url) -> returns list of product ids (DONE)
-#TODO Endpoint to delete an item: (id) -> returns message
+#TODO Endpoint to delete an item: (id) -> returns message (DONE)
 #TODO Endpoint that returns all saved embeddings: () -> list of all embeddings with its payload
 #TODO Endpoint that searches for a specific id: (id) -> returns the saved embedding and payload

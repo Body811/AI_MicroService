@@ -7,13 +7,12 @@ from app.core.image_utils import preprocess_image, get_image_embedding, download
 from qdrant_client import models
 from app.core.config import settings
 from app.core.qdrant_utils import qdrant_client
-
-
+import io
  
 #TODO service to get closest item: (1 url) -> returns list of product ids
 #TODO service to delete an item: (id:int) -> returns message
 
-async def store_image_embeddings(image_data):
+async def store_image_service(image_data):
     keys = list(image_data.keys())  
 
 
@@ -45,10 +44,11 @@ async def store_image_embeddings(image_data):
     return len(keys)
 
 
-async def find_similar(url, top_k):
+async def search_image_service(file, top_k):
     
-    async with aiohttp.ClientSession() as session:
-        image = await download_image(session, url)
+    image_bytes = await file.read()
+    
+    image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
     
     inputs = preprocess_image(images=image)
     embeddings = get_image_embedding(inputs=inputs)
@@ -69,4 +69,11 @@ async def find_similar(url, top_k):
     ]
 
     return search_result
+    
+def delete_image_service(ids):
+    
+    qdrant_client.delete(
+        collection_name=settings.QDRANT_SIMILARITY_COLLECTION_NAME,
+        points_selector=ids
+    )
     
