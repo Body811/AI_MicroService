@@ -10,8 +10,6 @@ qdrant_client = QdrantClient(url=settings.QDRANT_URL, api_key=settings.QDRANT_AP
 def create_qdrant_collection(collection_name: str, vector_size: int):
 
 
-    print(f"Creating Qdrant collection: {collection_name}")
-
     qdrant_client.create_collection(
         collection_name=collection_name,
         vectors_config=VectorParams(size=vector_size, distance=Distance.COSINE)

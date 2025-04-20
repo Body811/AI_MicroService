@@ -23,7 +23,7 @@ async def search_image(file: UploadFile = File(...),top_k: int = 5):
             raise HTTPException(status_code=400, detail="Invalid file type!: Use supported formats (jpg, png, webp)")
         
         results = await search_image_service(file, top_k)
-        return ImageSimilarityResponse(products=results)
+        return ImageSimilarityResponse(images=results)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -41,8 +41,3 @@ async def delete_image(request: DeleteImageRequest):
         raise HTTPException(status_code=500, detail=str(e))
     
     
-#TODO Endpoint save Embedding: (list of urls) -> returns message (DONE)
-#TODO Endpoint get closest item: (1 url) -> returns list of product ids (DONE)
-#TODO Endpoint to delete an item: (id) -> returns message (DONE)
-#TODO Endpoint that returns all saved embeddings: () -> list of all embeddings with its payload
-#TODO Endpoint that searches for a specific id: (id) -> returns the saved embedding and payload
