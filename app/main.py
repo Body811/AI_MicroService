@@ -1,9 +1,11 @@
 from fastapi import FastAPI
+import torch
 from contextlib import asynccontextmanager
 from api.v1.endpoints import image_similarity, product_recommendation
 from core.config import settings
 from core.qdrant_utils import qdrant_client, create_qdrant_collection
 
+torch.backends.nnpack.enabled = False
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

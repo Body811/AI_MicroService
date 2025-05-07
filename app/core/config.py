@@ -3,15 +3,13 @@ import os
 
 class Settings:
     APP_NAME = os.getenv("APP_NAME", "AI Microservice")
-    DEBUG = os.getenv("DEBUG", "False").lower() == "true"  # Convert string to bool
-    
-    # Qdrant Settings
-    QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
-    QDRANT_API_KEY = os.getenv("QDRANT_API_KEY", "")
-    QDRANT_SIMILARITY_COLLECTION_NAME = os.getenv("QDRANT_SIMILARITY_COLLECTION_NAME", "similarity_collection")
-    QDRANT_SIMILARITY_COLLECTION_VECTOR_SIZE = int(os.getenv("QDRANT_SIMILARITY_COLLECTION_VECTOR_SIZE", "512"))
-    QDRANT_RECOMMENDATION_COLLECTION_NAME = os.getenv("QDRANT_RECOMMENDATION_COLLECTION_NAME", "recommendation_collection")
-    QDRANT_RECOMMENDATION_COLLECTION_VECTOR_SIZE = int(os.getenv("QDRANT_RECOMMENDATION_COLLECTION_VECTOR_SIZE", "512"))
+    DEBUG = os.getenv("DEBUG", "False").lower() == "true" 
+    QDRANT_URL = os.getenv("QDRANT_URL")
+    QDRANT_API_KEY = os.getenv("QDRANT_API_KEY")
+    QDRANT_SIMILARITY_COLLECTION_NAME = os.getenv("QDRANT_SIMILARITY_COLLECTION_NAME", "Similarity_Search")
+    QDRANT_SIMILARITY_COLLECTION_VECTOR_SIZE = int(os.getenv("QDRANT_SIMILARITY_COLLECTION_VECTOR_SIZE", "1000"))
+    QDRANT_RECOMMENDATION_COLLECTION_NAME = os.getenv("QDRANT_RECOMMENDATION_COLLECTION_NAME", "Product_Recommendation")
+    QDRANT_RECOMMENDATION_COLLECTION_VECTOR_SIZE = int(os.getenv("QDRANT_RECOMMENDATION_COLLECTION_VECTOR_SIZE", "386"))
 
 settings = Settings()
 
