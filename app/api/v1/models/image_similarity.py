@@ -1,9 +1,9 @@
 from pydantic import BaseModel, Field
 from typing import List, Dict
-from uuid import UUID
+# from uuid import UUID
 
 class StoreImageRequest(BaseModel):
-    data: Dict[UUID, str] = Field(
+    data: Dict[str, str] = Field(
         ...,
         description="Dictionary mapping product UUIDs to image URLs",
         examples=[{
