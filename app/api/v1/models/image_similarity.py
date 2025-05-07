@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import List, Dict
-# from uuid import UUID
+
 
 class StoreImageRequest(BaseModel):
     data: Dict[str, str] = Field(
@@ -45,7 +45,7 @@ class StoreImageResponse(BaseModel):
         }
 
 class ImageSimilarity(BaseModel):
-    id: UUID = Field(
+    id: str = Field(
         ...,
         description="Unique identifier of the image",
         examples=["550e8400-e29b-41d4-a716-446655440000"]
@@ -102,7 +102,7 @@ class ImageSimilarityResponse(BaseModel):
         }
 
 class DeleteImageRequest(BaseModel):
-    ids: List[UUID] = Field(
+    ids: List[str] = Field(
         ...,
         description="List of image IDs to delete",
         examples=[["550e8400-e29b-41d4-a716-446655440000", "3fa85f64-5717-4562-b3fc-2c963f66afa6"]]
