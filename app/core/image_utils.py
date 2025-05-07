@@ -2,7 +2,8 @@ from typing import List
 from io import BytesIO
 from PIL import Image
 from MLmodels.image_embedding_model import model, processor_model
-
+import torch
+torch.backends.nnpack.enabled = False
 
 
 async def download_image(session, url):
