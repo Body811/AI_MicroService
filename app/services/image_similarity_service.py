@@ -3,7 +3,7 @@ from PIL import Image
 from io import BytesIO
 import aiohttp
 import asyncio
-from app.core.image_utils import preprocess_image, get_image_embedding, download_image
+from core.image_utils import preprocess_image, get_image_embedding, download_image
 from qdrant_client import models
 from core.config import settings
 from core.qdrant_utils import qdrant_client
