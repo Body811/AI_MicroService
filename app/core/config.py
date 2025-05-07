@@ -1,7 +1,7 @@
 from decouple import Config, RepositoryEnv
 
 
-config = Config(RepositoryEnv("app\\.env"))
+config = Config(RepositoryEnv(".env"))
 class Settings:
     
     APP_NAME = config("APP_NAME", default="AI Microservice")
