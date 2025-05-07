@@ -1,5 +1,6 @@
 from transformers import ResNetForImageClassification, AutoImageProcessor
-
+import torch
+torch.backends.nnpack.enabled = False
 
 model = ResNetForImageClassification.from_pretrained("microsoft/resnet-50")
 

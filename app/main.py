@@ -6,6 +6,7 @@ from core.config import settings
 from core.qdrant_utils import qdrant_client, create_qdrant_collection
 
 torch.backends.nnpack.enabled = False
+torch.set_default_dtype(torch.float32)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
