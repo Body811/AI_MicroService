@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, UploadFile, File
-from app.services.image_similarity_service import store_image_service, search_image_service, delete_image_service
-from app.api.v1.models.image_similarity import *
+from services.image_similarity_service import store_image_service, search_image_service, delete_image_service
+from api.v1.models.image_similarity import *
 
 router = APIRouter()
 

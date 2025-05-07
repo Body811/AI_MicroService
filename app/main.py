@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
-from app.api.v1.endpoints import image_similarity, product_recommendation
-from app.core.config import settings
-from app.core.qdrant_utils import qdrant_client, create_qdrant_collection
+from api.v1.endpoints import image_similarity, product_recommendation
+from core.config import settings
+from core.qdrant_utils import qdrant_client, create_qdrant_collection
 
 
 @asynccontextmanager

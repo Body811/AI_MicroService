@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from app.services.product_recommendation_service import store_product_service, recommend_product_service
-from app.api.v1.models.product_recommendation import *
+from services.product_recommendation_service import store_product_service, recommend_product_service
+from api.v1.models.product_recommendation import *
 
 router = APIRouter()
 

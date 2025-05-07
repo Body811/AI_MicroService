@@ -5,8 +5,8 @@ import aiohttp
 import asyncio
 from app.core.image_utils import preprocess_image, get_image_embedding, download_image
 from qdrant_client import models
-from app.core.config import settings
-from app.core.qdrant_utils import qdrant_client
+from core.config import settings
+from core.qdrant_utils import qdrant_client
 import io
  
 #TODO service to get closest item: (1 url) -> returns list of product ids

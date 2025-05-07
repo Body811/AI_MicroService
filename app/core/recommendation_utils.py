@@ -2,7 +2,7 @@ import torch
 import numpy as np
 import re
 from sklearn.preprocessing import MinMaxScaler
-from app.MLmodels.product_recommendation_model import model, tokenizer
+from MLmodels.product_recommendation_model import model, tokenizer
 
 def get_text_embedding(text):
     inputs = tokenizer(text, return_tensors="pt", truncation=True, padding=True)

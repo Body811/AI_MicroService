@@ -1,7 +1,7 @@
 from typing import List
 from io import BytesIO
 from PIL import Image
-from app.MLmodels.image_embedding_model import model, processor_model
+from MLmodels.image_embedding_model import model, processor_model
 
 
 

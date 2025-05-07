@@ -1,8 +1,8 @@
 from qdrant_client import models  
-from app.core.config import settings
-from app.core.qdrant_utils import qdrant_client
-from app.core.recommendation_utils import process_product_data
-from app.api.v1.models.product_recommendation import ProductRecommendation
+from core.config import settings
+from core.qdrant_utils import qdrant_client
+from core.recommendation_utils import process_product_data
+from api.v1.models.product_recommendation import ProductRecommendation
 from qdrant_client.models import PointStruct
 import numpy as np
 
