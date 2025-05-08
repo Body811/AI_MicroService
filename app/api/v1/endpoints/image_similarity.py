@@ -21,8 +21,8 @@ async def search_image(file: UploadFile = File(...),top_k: int = 5):
     """
     Search for similar images based on the uploaded image.
     ### Parameters:
-    - **file**: The image file to search for similar images.
-    - **top_k**: The number of similar images to return (default is 5).
+    - file: The image file to search for similar images.
+    - top_k: The number of similar images to return (default is 5).
     ### Notes:
     - Supported image formats: JPG, PNG, WebP, JPEG.
     """
