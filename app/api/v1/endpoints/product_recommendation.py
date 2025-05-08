@@ -5,7 +5,7 @@ from api.v1.models.product_recommendation import *
 router = APIRouter()
 
 
-@router.post("/store", response_model=StoreProductResponse)
+@router.post("/add", response_model=StoreProductResponse)
 async def store_product(request: StoreProductRequest):
     try:
         stored_products = await store_product_service(request.products)   

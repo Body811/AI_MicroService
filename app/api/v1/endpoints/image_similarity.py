@@ -4,7 +4,7 @@ from api.v1.models.image_similarity import *
 
 router = APIRouter()
 
-@router.post("/store", response_model=StoreImageResponse)
+@router.post("/add", response_model=StoreImageResponse)
 async def store_images(request: StoreImageRequest):
     try:
         stored_images = await store_image_service(request.data)    
@@ -20,17 +20,15 @@ async def store_images(request: StoreImageRequest):
 async def search_image(file: UploadFile = File(...),top_k: int = 5):
     """
     Search for similar images based on the uploaded image.
-    
-    ### Examples:
-    - Upload a JPG image with default 5 results
-    - Upload a PNG image with 10 results by setting top_k=10
-    
+    ### Parameters:
+    - **file**: The image file to search for similar images.
+    - **top_k**: The number of similar images to return (default is 5).
     ### Notes:
-    - Supported image formats: JPG, PNG, WebP
+    - Supported image formats: JPG, PNG, WebP, JPEG.
     """
     try:
-        if file.content_type not in {"image/jpeg", "image/png", "image/webp"}:
-            raise HTTPException(status_code=400, detail="Invalid file type!: Use supported formats (jpg, png, webp)")
+        if file.content_type not in {"image/jpeg", "image/png", "image/webp", "image/jpg"}:
+            raise HTTPException(status_code=400, detail="Invalid file type!: Use supported formats (jpg, jpeg, png, webp)")
         
         results = await search_image_service(file, top_k)
         return ImageSimilarityResponse(images=results)
