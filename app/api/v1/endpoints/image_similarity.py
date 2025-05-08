@@ -16,10 +16,22 @@ async def store_images(request: StoreImageRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.post("/search",response_model=ImageSimilarityResponse)
+@router.post(
+    "/search",
+    response_model=ImageSimilarityResponse,
+    openapi_examples={
+        "example1": {
+            "description": "Upload a JPG image to find similar images",
+            "value": {
+                "file": "binary_file_content",  
+                "top_k": 5
+            }
+        }
+    }
+)
 async def search_image(file: UploadFile = File(...),top_k: int = 5):
     try:
-        if file.content_type not in {"image/jpg, image/png, image/webp"}:
+        if file.content_type not in {"image/jpg", "image/png", "image/webp"}:
             raise HTTPException(status_code=400, detail="Invalid file type!: Use supported formats (jpg, png, webp)")
         
         results = await search_image_service(file, top_k)
