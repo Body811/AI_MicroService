@@ -4,6 +4,7 @@ from core.qdrant_utils import qdrant_client
 from core.recommendation_utils import process_product_data
 from api.v1.models.product_recommendation import ProductRecommendation
 from qdrant_client.models import PointStruct
+import datetime
 import numpy as np
 
 
@@ -26,10 +27,12 @@ async def store_product_service(products):
     
     return len(points)
 
-async def recommend_product_service(history_ids, top_k):
+async def recommend_product_service(history_items, top_k):
     
-    if not history_ids:
-        raise Exception("History IDs list is empty")
+    if not history_items:
+        raise Exception("History items list is empty")
+    
+    history_ids = [item.id for item in history_items]
     
     query_result = qdrant_client.retrieve(
     collection_name=settings.QDRANT_RECOMMENDATION_COLLECTION_NAME,
@@ -40,26 +43,42 @@ async def recommend_product_service(history_ids, top_k):
     if not query_result:
         raise ValueError("None of the product IDs in history were found")
     
+    
+    history_lookup = {item.id: item for item in history_items}
+    
     history_vectors = []
+    weights = []
     found_ids = []
     
+    today = datetime.now().date()
+    
     for record in query_result:
-        if record.vector:  # Check if vector exists
-            history_vectors.append(record.vector)
+        if record.vector:  
             found_ids.append(str(record.id))  
+            history_item = history_lookup.get(str(record.id))
+            if history_item:
+                history_vectors.append(record.vector)
+                days_ago = (today - datetime.strptime(history_item.date, "%Y-%m-%d").date()).days
+                recency_weight = 1.0 / (1.0 + days_ago)  
+                combined_weight = recency_weight * (1.0 + 0.2 * history_item.view_count)
+                weights.append(combined_weight) 
+            else:
+                weights.append(1.0)
 
     if not history_vectors:
         raise ValueError("No vectors found for the given product IDs")
 
-    composite_vector = np.mean(history_vectors, axis=0)
-    
+
+    weights = np.array(weights)
+    weights = weights / np.sum(weights)
+
+    composite_vector = np.average(history_vectors, axis=0, weights=weights)
+
     raw_results = qdrant_client.search(
         collection_name=settings.QDRANT_RECOMMENDATION_COLLECTION_NAME,
         query_vector=composite_vector.tolist(), 
-        limit=top_k + len(history_ids), 
-        query_filter=models.Filter(  
-
-        )
+        limit=top_k + len(found_ids),
+        with_payload=True,
     )
     
     results = [

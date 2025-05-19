@@ -17,19 +17,19 @@ def process_product_data(products):
     text_embeddings = []
     numerical_features = []
     
-    price_list, rating_list = [], []
+    rating_list =  []
     
     for product in products:
-        text = f"{product.name} {product.description} {' '.join(product.categories)} {product.handcrafter_name}"
+        # text = f"{product.name} {product.description} {' '.join(product.categories)} {product.handcrafter_Id}"
+        text = f"{product.name} {product.description} {' '.join(product.categories)}"
         cleaned_text = re.sub(r"[^a-zA-Z\s]", "", text)
         text_embeddings.append(get_text_embedding(cleaned_text))
         print(text)
 
-        price_list.append(product.price)
         rating_list.append(product.average_rating)
     
     scaler = MinMaxScaler()
-    numerical_data = np.array([price_list, rating_list]).T
+    numerical_data = np.array(rating_list).reshape(-1, 1)
     numerical_data = scaler.fit_transform(numerical_data)
 
     for i in range(len(products)):

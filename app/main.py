@@ -40,7 +40,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title=settings.APP_NAME, version="1.0.0",lifespan=lifespan)
 
-app.include_router(image_similarity.router, prefix="/api/v1/similarity", tags=["image_similarity"])
-app.include_router(product_recommendation.router, prefix="/api/v1/recommendation", tags=["product_recommendation"])
+app.include_router(image_similarity.router, prefix="/api/v1/image", tags=["image_similarity"])
+app.include_router(product_recommendation.router, prefix="/api/v1/product", tags=["product_recommendation"])
 
 

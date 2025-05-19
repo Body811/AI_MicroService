@@ -6,9 +6,8 @@ class Product(BaseModel):
     product_id: str = Field(..., examples=["123e4567-e89b-12d3-a456-426614174000"])
     name: str = Field(..., examples=["Handcrafted Wooden Bowl"])
     description: str = Field(...,examples=["Beautiful hand-carved wooden bowl made from sustainable oak. Perfect as a centerpiece or for serving salads."],)
-    handcrafter_name: str = Field(..., examples=["Jane Carpenter"])
+    handcrafter_id: str = Field(..., examples=["123e4567-e89b-12d3-a456-426614174000"])
     categories: List[str] = Field(..., examples=[["wood", "home decor", "crafts"]])
-    price: float = Field(..., examples=[42.99])
     average_rating: float = Field(..., examples=[4.8])
 
 
@@ -23,16 +22,16 @@ class StoreProductRequest(BaseModel):
                             "product_id": "123e4567-e89b-12d3-a456-426614174000",
                             "name": "Handcrafted Wooden Bowl",
                             "description": "Beautiful hand-carved wooden bowl made from sustainable oak.",
-                            "handcrafter_name": "Jane Carpenter",
+                            "handcrafter_id": "123e4567-e89b-12d3-a456-4266141740801",
                             "categories": ["kitchen", "home decor", "sustainable"],
                             "price": 42.99,
                             "average_rating": 4.8
                         },
                         {
-                            "product_id": "223e4567-e89b-12d3-a456-426614174001",
+                            "product_id": "223e4567-e89b-12d3-a456-42661417487",
                             "name": "Hand-knitted Wool Scarf",
                             "description": "Warm and cozy scarf made from ethically sourced merino wool.",
-                            "handcrafter_name": "Alex Weaver",
+                            "handcrafter_id": "123e4567-e89b-12d3-a456-4266141746478",
                             "categories": ["clothing", "accessories", "winter"],
                             "price": 35.50,
                             "average_rating": 4.9
@@ -57,18 +56,42 @@ class StoreProductResponse(BaseModel):
         }
 
 
+class HistoryItems(BaseModel):
+    id: str = Field(..., description="Unique identifier of the viewed or purchased product")
+    view_count: int = Field(..., description="Number of times the product has been viewed")
+    date: str = Field(..., description="Date when the product was most recently viewed")
+
+
 class RecommendProductRequest(BaseModel):
-    history: List[str] = Field(
+    history: List[HistoryItems] = Field(
         ...,
-        description="List of product IDs the user has viewed or purchased",
-        examples=[["123e4567-e89b-12d3-a456-426614174000", "223e4567-e89b-12d3-a456-426614174001"]])
+        description="List of products the user has viewed or purchased"
+    )
     top_k: int = Field(
         default=3,
         description="Number of recommendations to return",
         examples=[3],
-        ge=1,
-        le=20
+        ge=1, # minimum value
+        le=20 # maximum value
     )
+    class Config:
+        schema_extra = {
+            "example": {
+                "history": [
+                    {
+                        "id": "123e4567-e89b-12d3-a456-426614174000",
+                        "view_count": 5,
+                        "date": "2023-08-30"
+                    },
+                    {
+                        "id": "223e4567-e89b-12d3-a456-426614174001",
+                        "view_count": 3,
+                        "date": "2023-08-29"
+                    }
+                ],
+                "top_k": 3
+            }
+        }
 
 
 class ProductRecommendation(BaseModel):

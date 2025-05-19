@@ -7,6 +7,16 @@ router = APIRouter()
 @router.post("/add", response_model=StoreImageResponse)
 async def store_images(request: StoreImageRequest):
     try:
+        allowed_extensions = ["jpg", "jpeg", "png", "webp"]
+        for image_id, image_url in request.data.items():
+            extension = image_url.split(".")[-1].lower()
+        
+        if extension not in allowed_extensions:
+                raise HTTPException(
+                    status_code=400, 
+                    detail=f"Image format '{extension}' is not supported. Only {', '.join(allowed_extensions)} formats are allowed."
+                )
+                
         stored_images = await store_image_service(request.data)    
         return StoreImageResponse(
             images_stored=stored_images,
@@ -27,7 +37,8 @@ async def search_image(file: UploadFile = File(...),top_k: int = 5):
     - Supported image formats: JPG, PNG, WebP, JPEG.
     """
     try:
-        if file.content_type not in {"image/jpeg", "image/png", "image/webp", "image/jpg"}:
+        allowed_extensions = ["jpg", "jpeg", "png", "webp"]
+        if file.content_type not in allowed_extensions:
             raise HTTPException(status_code=400, detail="Invalid file type!: Use supported formats (jpg, jpeg, png, webp)")
         
         results = await search_image_service(file, top_k)
