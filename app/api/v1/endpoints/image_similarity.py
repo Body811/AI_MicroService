@@ -37,7 +37,7 @@ async def search_image(file: UploadFile = File(...),top_k: int = 5):
     - Supported image formats: JPG, PNG, WebP, JPEG.
     """
     try:
-        allowed_extensions = ["jpg", "jpeg", "png", "webp"]
+        allowed_extensions = ["image/jpeg", "image/png", "image/webp"]
         if file.content_type not in allowed_extensions:
             raise HTTPException(status_code=400, detail="Invalid file type!: Use supported formats (jpg, jpeg, png, webp)")
         
