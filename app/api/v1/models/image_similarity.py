@@ -59,8 +59,6 @@ class ImageSimilarity(BaseModel):
         ...,
         description="Similarity score (higher means more similar)",
         examples=[0.95],
-        ge=0.0,
-        le=1.0
     )
     
     class Config:
