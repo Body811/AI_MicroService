@@ -57,9 +57,15 @@ class StoreProductResponse(BaseModel):
 
 
 class HistoryItems(BaseModel):
-    id: str = Field(..., description="Unique identifier of the viewed or purchased product")
-    view_count: int = Field(..., description="Number of times the product has been viewed")
-    date: str = Field(..., description="Date when the product was most recently viewed")
+    id: str = Field(..., 
+                    description="Unique identifier of the viewed or purchased product",
+                    examples=["123e4567-e89b-12d3-a456-426614174000"])
+    view_count: int = Field(..., 
+                           description="Number of times the product has been viewed",
+                           examples=[5])
+    date: str = Field(..., 
+                     description="Date when the product was most recently viewed",
+                     examples=["2023-08-30"])
 
 
 class RecommendProductRequest(BaseModel):

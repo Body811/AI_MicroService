@@ -4,7 +4,7 @@ from core.qdrant_utils import qdrant_client
 from core.recommendation_utils import process_product_data
 from api.v1.models.product_recommendation import ProductRecommendation
 from qdrant_client.models import PointStruct
-import datetime
+from datetime import datetime
 import numpy as np
 
 
